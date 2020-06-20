@@ -1,7 +1,19 @@
 const express = require('express')
 const app = express()
+const morgan = require('morgan')
 
 app.use(express.json())
+
+//3.7
+app.use(morgan('tiny'))
+
+//3.8
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :data'))
+
+morgan.token('data', (res) => {
+  return JSON.stringify(res.body) //toimii sekä req että res. Tulkitsin tehtävänannon 'pyynnön mukana tuleva data' -> res.body
+})
+
 
 let persons = [
     {
@@ -100,6 +112,7 @@ let persons = [
     persons = persons.concat(person)
 
     res.json(person)
+    
     
   })
   
